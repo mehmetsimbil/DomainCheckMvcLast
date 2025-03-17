@@ -1,0 +1,51 @@
+﻿@using Business.Responses.Domain
+@using Business.Dto_s.Domain
+@model List<DomainListItemDto>
+
+<div style="margin-top:10%">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Domain Adı</th>
+                <th scope="col">Domain Alınan Site</th>
+                <th scope="col">Bitiş Tarihi</th>
+                <th scope="col">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="color:blue">@item.Id</td>
+                    <td style="color:red">@item.DomainName</td>
+                    <td style="color:red">@item.BuyedDomainSite</td>
+                    <td style="color:red">@item.EndTime.ToString("yyyy-MM-dd")</td>
+
+                    <td>
+                        <a asp-action="GetById" asp-controller="Domain" asp-route-id="@item.Id" class="btn btn-success">Güncelle</a>
+                        <form asp-action="DeleteDomain" asp-controller="Domain" method="post" style="display:inline;">
+                            <input type="hidden" name="Id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?');">Sil</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+    @using (Html.BeginForm("ExcelToExportLast15Days", "Domain", FormMethod.Post))
+    {
+        <button class="btn btn-primary mt-2" type="submit">Excel'e Aktar</button>
+    }
+
+  @*   <form asp-action="ImportDomains" asp-controller="Domain" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Excel Dosyası Yükle:</label>
+            <input type="file" name="file" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">İçe Aktar</button>
+    </form> *@
+
+</div>
